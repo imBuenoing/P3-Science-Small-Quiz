@@ -1,2 +1,2 @@
 // config.js
-const geminiAPIKey = "__GEMINI_API_KEY_PLACEHOLDER__"; // This is a unique placeholder string
+const geminiAPIKey = "AIzaSyAynsUDfI2nLfg-u1Qkt40zd4RdY1c8BEU"; // This is a unique placeholder string
