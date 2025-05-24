@@ -1,60 +1,60 @@
-name: Build and Deploy Single Page Quiz to /docs
+name: Deploy Processed Files to Main Branch Root
+
 on:
-   push:
-     branches:
-       - main
+  push:
+    branches:
+      - main
 
- jobs:
-   build-and-deploy:
-     runs-on: ubuntu-latest
-     permissions:
-       contents: write
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to commit back to the main branch
 
-     steps:
-       - name: Checkout repository
-         uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # Important for allowing the commit step to push
+          fetch-depth: 0 # Fetch all history so a normal commit can be made
 
-       - name: Inject API Key and Prepare /docs folder
-         run: |
-           echo "Creating /docs directory..."
-           mkdir -p ./docs
+      - name: Inject API Key into config.js
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls -la
 
-           echo "Processing config.js..."
-           if [ -f config.js ]; then
-             sed "s|__GEMINI_API_KEY_PLACEHOLDER__|${{ secrets.GEMINI_API_KEY }}|g" config.js > ./docs/config.js
-             echo "config.js processed and placed in /docs."
-           else
-             echo "ERROR: config.js not found in repository root!"
-             exit 1
-           fi
+          if [ ! -f config.js ]; then
+            echo "ERROR: config.js not found in repository root!"
+            exit 1
+          fi
 
-           echo "Copying index.html to /docs..."
-           if [ -f index.html ]; then
-             cp index.html ./docs/
-             echo "index.html copied to /docs."
-           else
-             echo "ERROR: index.html not found in repository root!"
-             exit 1
-           fi
-         env:
-           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          echo "Original config.js content:"
+          cat config.js
 
-       - name: Debug - List files in /docs
-         run: |
-           echo "Contents of ./docs directory:"
-           ls -la ./docs
-           echo "Content of ./docs/config.js:"
-           cat ./docs/config.js || echo "./docs/config.js not found or empty"
+          # Create a temporary file for the modified content
+          sed "s|__GEMINI_API_KEY_PLACEHOLDER__|${{ secrets.GEMINI_API_KEY }}|g" config.js > config.js.tmp
+          
+          # Replace the original config.js with the modified version
+          mv config.js.tmp config.js
 
-       - name: Deploy /docs folder to main branch
-         uses: peaceiris/actions-gh-pages@v3
-         with:
-           github_token: ${{ secrets.GITHUB_TOKEN }}
-           publish_branch: main
-           publish_dir: ./docs
-           destination_dir: docs
-           user_name: 'github-actions[bot]'
-           user_email: 'github-actions[bot]@users.noreply.github.com'
-           commit_message: 'Deploy single page quiz to /docs folder'
-           keep_files: false
-           # allow_empty_commit: true # Keep this commented unless debugging "nothing to commit" issues
+          echo "Processed config.js content:"
+          cat config.js # This will show '***' for the key in logs
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          
+          # Check if there are changes to commit
+          if ! git diff --quiet HEAD -- config.js index.html; then
+            echo "Changes detected in config.js or index.html (or other tracked files if modified)."
+            git add config.js index.html # Add any other files you might modify, like index.html if you were processing it
+            git commit -m "Inject API key and update site files [skip ci]"
+            git push origin main
+          else
+            echo "No changes to commit to config.js or index.html."
+          fi
+        # [skip ci] in the commit message prevents the push from re-triggering the workflow
