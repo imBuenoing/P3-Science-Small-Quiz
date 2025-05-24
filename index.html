@@ -158,7 +158,7 @@ const allQuizData = {
       q1_15: "To choose the best material for the job so it works well, is safe, and lasts."
     },
     shortAnswerIds: ["q1_11", "q1_12", "q1_13", "q1_14", "q1_15"],
-    totalQuestions: 19
+    totalQuestions: 19 // 5 MCQ + 5 FIB + 4 Match Items (counted as 4pts) + 5 SA
   },
   quizSet2: {
     title: "Revision Set 2: Definitions & Properties",
@@ -168,10 +168,10 @@ const allQuizData = {
     match: { q2_16_strength: "C", q2_16_flexibility: "A", q2_16_waterproof: "B", q2_16_transparency: "D" },
     shortAnswer: {
       q2_11: "Strength means a material can hold or support heavy things without breaking, like a strong metal shelf holding books.",
-      q2_12: "Flexibility means a material can bend without breaking. Rubber is a flexible material.",
-      q2_13: "If you put water on it and the water stays on top or runs off instead of soaking in, it's waterproof.",
-      q2_14: "Transparency means you can see clearly through the material, like a clean glass window.",
-      q2_15: "For a boat, it needs to float. For an anchor, it needs to sink to hold the boat."
+      q2_12: "Flexibility means a material can bend without breaking. Rubber is a flexible material, like a hose.",
+      q2_13: "If you put water on it and the water stays on top or runs off instead of soaking in, it's waterproof. Example: raincoat.",
+      q2_14: "Transparency means you can see clearly through the material, like a clean glass window or clear plastic sheet.",
+      q2_15: "For a boat, it needs to float to stay on water. For an anchor, it needs to sink to hold the boat in place."
     },
     shortAnswerIds: ["q2_11", "q2_12", "q2_13", "q2_14", "q2_15"],
     totalQuestions: 19
@@ -180,14 +180,14 @@ const allQuizData = {
     title: "Revision Set 3: Application & Uses",
     formId: "quizFormSet3", resultsId: "resultsSet3",
     mcq: { q3_1: "C", q3_2: "B", q3_3: "C", q3_4: "B", q3_5: "C" },
-    fib: { q3_6: ["float"], q3_7: ["fabric","fabrics"], q3_8: ["strong"], q3_9: ["strong"], q3_10: ["transparent","clear"]},
+    fib: { q3_6: ["float"], q3_7: ["fabric","fabrics", "cloth"], q3_8: ["strong"], q3_9: ["strong"], q3_10: ["transparent","clear"]},
     match: { q3_16_window: "D", q3_16_tyre: "B", q3_16_tshirt: "C", q3_16_coins: "A" },
     shortAnswer: {
-      q3_11: "Fabric is good for T-shirts because it's soft (comfortable to wear) and flexible (allows movement).",
-      q3_12: "Strength would be most important for a bridge, so it can support heavy vehicles and people without collapsing.",
-      q3_13: "Plastic and fabric are less likely to break into sharp pieces if dropped, making them safer than glass or ceramic for young children.",
-      q3_14: "An umbrella needs to be waterproof to keep rain from passing through and getting you wet.",
-      q3_15: "For a rope swing, strength (so it doesn't break when someone swings on it) and flexibility (so it can swing smoothly) are important."
+      q3_11: "Fabric is good for T-shirts because it's soft (comfortable against skin) and flexible (allows easy movement).",
+      q3_12: "Strength would be most important for a bridge, so it can support heavy traffic like cars and trucks without collapsing.",
+      q3_13: "Plastic and fabric are safer for young children's toys as they are less likely to break into sharp pieces if dropped, unlike glass or ceramic which can shatter.",
+      q3_14: "An umbrella needs to be waterproof to shield a person from rain by preventing water from passing through the material.",
+      q3_15: "For a rope swing, strength is crucial so the rope doesn't snap under a person's weight. Durability (related to strength and material type) is also important so it lasts outdoors."
     },
     shortAnswerIds: ["q3_11", "q3_12", "q3_13", "q3_14", "q3_15"],
     totalQuestions: 19
@@ -206,7 +206,7 @@ function showQuiz(quizId) {
   document.getElementById(quizId).classList.add('active');
   document.querySelectorAll('.navigation-buttons button').forEach(btn => btn.classList.remove('active-nav'));
   document.getElementById(`navBtn${quizId.charAt(0).toUpperCase()}${quizId.slice(1).replace('quizS','S')}`).classList.add('active-nav');
-  for (const setId in allQuizData) {
+  for (const setId in allQuizData) { // Clear results of ALL quiz sets when switching
     const resultsEl = getFeedbackElement(allQuizData[setId].resultsId);
     if (resultsEl) resultsEl.innerHTML = '';
   }
@@ -215,7 +215,7 @@ function showQuiz(quizId) {
 async function evaluateMultipleShortAnswersWithGemini(shortAnswerData) {
   if (typeof geminiAPIKey === 'undefined' || !geminiAPIKey || geminiAPIKey === "YOUR_GEMINI_API_KEY_HERE" || geminiAPIKey === "__GEMINI_API_KEY_PLACEHOLDER__") {
     console.error("Gemini API Key is not defined or is a placeholder.");
-    return shortAnswerData.map(() => "Error: API Key not configured.");
+    return shortAnswerData.map(item => `QID:${item.id} Result:Incorrect. Explanation:(Error: API Key not configured.)||END_Q||`);
   }
   const GEMINI_API_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL_NAME}:generateContent?key=${geminiAPIKey}`;
   let promptContent = `You are an AI grading assistant for a P3 science quiz. Evaluate each student's answer against its model answer. For EACH question, your response MUST be: QID:[question_id] Result:[Correct.|Incorrect.] Explanation:[Your P3-friendly explanation]||END_Q||. Example: QID:q1_11 Result:Correct. Explanation:Good.||END_Q||. No text before first QID or after last ||END_Q||. Questions:`;
@@ -224,28 +224,46 @@ async function evaluateMultipleShortAnswersWithGemini(shortAnswerData) {
   try {
     const response = await fetch(GEMINI_API_ENDPOINT, {
       method: "POST", headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({contents: [{ parts: [{ text: promptContent }] }], generationConfig: {temperature: 0.2, maxOutputTokens: 1500}})
+      body: JSON.stringify({contents: [{ parts: [{ text: promptContent }] }], generationConfig: {temperature: 0.2, maxOutputTokens: 2048}}) // Increased tokens slightly
     });
     if (!response.ok) {
       const err = await response.json().catch(() => ({error:{message:"Unknown API error"}}));
-      return shortAnswerData.map(item => `QID:${item.id} Result:Incorrect. Explanation:(API Error: ${err.error.message||response.status})||END_Q||`);
+      console.error("Gemini API Error:", response.status, err);
+      return shortAnswerData.map(item => `QID:${item.id} Result:Incorrect. Explanation:(API Error: ${err.error?.message||response.status})||END_Q||`);
     }
     const data = await response.json();
-    if (data.candidates?.[0]?.finishReason === "SAFETY") return shortAnswerData.map(item => `QID:${item.id} Result:Incorrect. Explanation:(API: Blocked by safety.)||END_Q||`);
-    if (!data.candidates?.[0]?.content?.parts?.[0]?.text) return shortAnswerData.map(item => `QID:${item.id} Result:Incorrect. Explanation:(API Error: Malformed response.)||END_Q||`);
+    if (data.promptFeedback && data.promptFeedback.blockReason) { // Check for prompt blocking
+        console.warn("Gemini API prompt blocked:", data.promptFeedback.blockReason, data.promptFeedback.safetyRatings);
+        return shortAnswerData.map(item => `QID:${item.id} Result:Incorrect. Explanation:(API: Prompt blocked - ${data.promptFeedback.blockReason})||END_Q||`);
+    }
+    if (data.candidates?.[0]?.finishReason === "SAFETY" || data.candidates?.[0]?.finishReason === "RECITATION" || data.candidates?.[0]?.finishReason === "OTHER" ) {
+        console.warn("Gemini API response issue, Finish Reason:", data.candidates[0].finishReason);
+        return shortAnswerData.map(item => `QID:${item.id} Result:Incorrect. Explanation:(API: Response issue - ${data.candidates[0].finishReason})||END_Q||`);
+    }
+    if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
+        console.error("Gemini API Error: Malformed response structure", data);
+        return shortAnswerData.map(item => `QID:${item.id} Result:Incorrect. Explanation:(API Error: Malformed response.)||END_Q||`);
+    }
     const aiFullResponse = data.candidates[0].content.parts[0].text;
     const evaluations = {};
     aiFullResponse.split("||END_Q||").forEach(part => {
       if (!part.trim()) return;
       const qidMatch = part.match(/QID:([\w_]+)/);
       const resultMatch = part.match(/Result:(Correct\.|Incorrect\.)/);
-      const explanationMatch = part.match(/Explanation:([\s\S]*)/);
-      if (qidMatch &&resultMatch &&explanationMatch) evaluations[qidMatch[1]] = `${resultMatch[1]} ${explanationMatch[1].trim()}`;
-      else if (qidMatch && !evaluations[qidMatch[1]]) evaluations[qidMatch[1]] = "Incorrect. AI format error.";
+      const explanationMatch = part.match(/Explanation:([\s\S]*)/); // Allow multiline explanations
+      if (qidMatch &&resultMatch &&explanationMatch) {
+          evaluations[qidMatch[1]] = `${resultMatch[0]} ${explanationMatch[1].trim()}`; // Keep "Result:" prefix
+      } else if (qidMatch && !evaluations[qidMatch[1]]) {
+          evaluations[qidMatch[1]] = "Result:Incorrect. Explanation:AI response format error.";
+          console.warn("Could not parse AI response part for QID:", qidMatch[1], "Part:", part);
+      } else {
+          console.warn("Could not parse AI response part completely:", part);
+      }
     });
-    return shortAnswerData.map(item => evaluations[item.id] || "Incorrect. AI no feedback/format error.");
+    return shortAnswerData.map(item => evaluations[item.id] || `QID:${item.id} Result:Incorrect. Explanation:AI did not provide feedback or format was incorrect.||END_Q||`);
   } catch (error) {
-    return shortAnswerData.map(item => `QID:${item.id} Result:Incorrect. Explanation:(API Error: ${error.message})||END_Q||`);
+    console.error("General error during Gemini API call:", error);
+    return shortAnswerData.map(item => `QID:${item.id} Result:Incorrect. Explanation:(JS Error: ${error.message})||END_Q||`);
   }
 }
 
@@ -258,34 +276,42 @@ async function submitQuiz(quizSetKey) {
   form.querySelectorAll('.feedback').forEach(el => { el.innerHTML = ''; el.className = 'feedback'; });
   setFeedback(resultsDiv, "Processing...", "info");
 
+  // MCQ
   Object.keys(quizDef.mcq).forEach(qName => {
     const fbEl = getFeedbackElement(`f${qName.substring(1)}`);
     const sel = form.querySelector(`input[name="${qName}"]:checked`);
     if (sel?.value === quizDef.mcq[qName]) { score++; setFeedback(fbEl, "Correct!", "correct"); }
-    else { setFeedback(fbEl, `Incorrect. Ans: ${quizDef.mcq[qName]}`, "incorrect"); }
+    else if (sel) { setFeedback(fbEl, `Incorrect. Correct answer: ${quizDef.mcq[qName]}`, "incorrect"); }
+    else { setFeedback(fbEl, "No answer selected.", "incorrect");}
   });
+  // FIB
   Object.keys(quizDef.fib).forEach(qName => {
     const fbEl = getFeedbackElement(`f${qName.substring(1)}`);
     const uIn = form.querySelector(`input[name="${qName}"]`).value.trim().toLowerCase();
     const corr = quizDef.fib[qName];
     const isCorr = Array.isArray(corr) ? corr.includes(uIn) : uIn === corr;
     if (isCorr && uIn) { score++; setFeedback(fbEl, "Correct!", "correct"); }
-    else if (uIn) { setFeedback(fbEl, `Incorrect. Ans: ${Array.isArray(corr)?corr.join('/'):corr}`, "incorrect"); }
-    else { setFeedback(fbEl, "No answer.", "incorrect"); }
+    else if (uIn) { setFeedback(fbEl, `Incorrect. Correct answer: ${Array.isArray(corr)?corr.join(' or '):corr}`, "incorrect"); }
+    else { setFeedback(fbEl, "No answer provided.", "incorrect"); }
   });
+  // Matching
   let matchScore = 0;
-  const matchPrefix = Object.keys(quizDef.match)[0]?.split('_').slice(0,2).join('_');
-  if (matchPrefix) {
+  const matchPrefix = Object.keys(quizDef.match)[0]?.split('_').slice(0,2).join('_'); // e.g. q1_16
+  if (matchPrefix && Object.keys(quizDef.match).length > 0) {
       const matchFbContainer = getFeedbackElement(`f${matchPrefix.substring(1)}`);
       if (matchFbContainer) matchFbContainer.innerHTML = '';
-      Object.keys(quizDef.match).forEach(itemName => {
+      Object.keys(quizDef.match).forEach(itemName => { // e.g. q1_16_rubber
           const selEl = form.querySelector(`select[name="${itemName}"]`);
-          const itemDispName = itemName.split('_').pop();
+          const itemDispName = itemName.split('_').pop().replace(/^\w/, c => c.toUpperCase()); // Rubber
           const itemFbDiv = document.createElement('div');
-          if (selEl?.value === quizDef.match[itemName]) {
-              matchScore++; itemFbDiv.textContent = `${itemDispName}: Correct!`; itemFbDiv.className = "feedback correct";
-          } else {
-              itemFbDiv.textContent = `${itemDispName}: Incorrect. Ans: ${quizDef.match[itemName]}`; itemFbDiv.className = "feedback incorrect";
+          if (selEl && selEl.value) {
+              if (selEl.value === quizDef.match[itemName]) {
+                  matchScore++; itemFbDiv.textContent = `${itemDispName}: Correct!`; itemFbDiv.className = "feedback correct";
+              } else {
+                  itemFbDiv.textContent = `${itemDispName}: Incorrect. Correct: ${quizDef.match[itemName]}`; itemFbDiv.className = "feedback incorrect";
+              }
+          } else if (selEl) {
+             itemFbDiv.textContent = `${itemDispName}: No answer selected.`; itemFbDiv.className = "feedback incorrect";
           }
           if (matchFbContainer && selEl) matchFbContainer.appendChild(itemFbDiv);
       });
@@ -293,43 +319,61 @@ async function submitQuiz(quizSetKey) {
   }
 
   const autoGradedScore = score;
-  const autoGradedTotal = (Object.keys(quizDef.mcq).length) + (Object.keys(quizDef.fib).length) + (Object.keys(quizDef.match).length / (Object.keys(quizDef.match)[0]?.split('_').length > 2 ? 1:0) || Object.keys(quizDef.match).length ); // Simpler way to count match items as 1 question if grouped by prefix. A bit complex here, better to store counts.
-  // For simplicity, assuming match is 4 points (1 per item)
-  const totalMatchPoints = Object.keys(quizDef.match).length > 0 ? 4 : 0; // Or dynamically count if needed
-  const autoGradedTotalForDisplay = (Object.keys(quizDef.mcq).length) + (Object.keys(quizDef.fib).length) + totalMatchPoints;
-
+  const numMcq = Object.keys(quizDef.mcq).length;
+  const numFib = Object.keys(quizDef.fib).length;
+  const numMatchItems = Object.keys(quizDef.match).length; // Each item is a point
+  const autoGradedTotalForDisplay = numMcq + numFib + numMatchItems;
 
   setFeedback(resultsDiv, `Auto-graded: ${autoGradedScore}/${autoGradedTotalForDisplay}. Evaluating short answers...`, "info");
+
   const shortAnswersToEval = [];
   quizDef.shortAnswerIds.forEach(qId => {
+    const fbEl = getFeedbackElement(`f${qId.substring(1)}`);
     const uIn = form.querySelector(`input[name="${qId}"]`).value.trim();
-    if (uIn) shortAnswersToEval.push({id: qId, userInput: uIn, modelAnswer: quizDef.shortAnswer[qId]});
-    else setFeedback(getFeedbackElement(`f${qId.substring(1)}`), "No answer.", "incorrect");
+    if (uIn) {
+        shortAnswersToEval.push({id: qId, userInput: uIn, modelAnswer: quizDef.shortAnswer[qId]});
+        if(fbEl) setFeedback(fbEl, "Queued for AI checking...", "loading");
+    } else {
+        if(fbEl) setFeedback(fbEl, "No answer provided.", "incorrect");
+    }
   });
 
   if (shortAnswersToEval.length > 0) {
     const aiEvals = await evaluateMultipleShortAnswersWithGemini(shortAnswersToEval);
-    aiEvals.forEach((resTxt) => {
-      const qData = shortAnswersToEval.find(sa => resTxt.startsWith(`QID:${sa.id}`)) || shortAnswersToEval[aiEvals.indexOf(resTxt)];
+    aiEvals.forEach((fullAiResultText) => { // Renamed to avoid conflict
+      const qData = shortAnswersToEval.find(sa => fullAiResultText.startsWith(`QID:${sa.id}`)) || shortAnswersToEval[aiEvals.indexOf(fullAiResultText)];
+      if (!qData) { // Should not happen if aiEvals has same length as shortAnswersToEval
+          console.error("Could not map AI response to question:", fullAiResultText);
+          return;
+      }
       const fbEl = getFeedbackElement(`f${qData.id.substring(1)}`);
-      const dispRes = resTxt.replace(/QID:[\w_]+ Result:/, "Result:");
-      if (resTxt.toLowerCase().includes("correct.")) { shortAnswersCorrect++; setFeedback(fbEl, dispRes, "correct");}
-      else { setFeedback(fbEl, dispRes, "incorrect");}
+      // The AI response now includes "Result:Correct." or "Result:Incorrect."
+      // Example: "Result:Correct. Your explanation is good."
+      // So we display it as is, after removing the QID prefix.
+      const displayableResult = fullAiResultText.replace(/QID:[\w_]+ /, ""); // Remove "QID:qX_Y "
+
+      if (fullAiResultText.toLowerCase().includes("result:correct.")) {
+        shortAnswersCorrect++;
+        setFeedback(fbEl, displayableResult, "correct");
+      } else {
+        setFeedback(fbEl, displayableResult, "incorrect");
+      }
     });
   }
-  score += shortAnswersCorrect;
+  score += shortAnswersCorrect; // Add AI graded score to the manually graded score
   setFeedback(resultsDiv, `Final Score for ${quizDef.title}: ${score} / ${quizDef.totalQuestions}`, "info");
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (typeof geminiAPIKey==='undefined' || geminiAPIKey==="__GEMINI_API_KEY_PLACEHOLDER__") {
+  if (typeof geminiAPIKey==='undefined' || geminiAPIKey==="__GEMINI_API_KEY_PLACEHOLDER__" || geminiAPIKey === "YOUR_GEMINI_API_KEY_HERE") {
     const resDiv1 = getFeedbackElement(allQuizData.quizSet1.resultsId);
     let warnMsg = "Warning: API Key placeholder. ";
     if (window.location.hostname.includes('github.io')) warnMsg += "Action might not have processed config.js.";
     else warnMsg += "Expected locally. AI grading won't work.";
     if(resDiv1) setFeedback(resDiv1, warnMsg, "incorrect");
+    console.warn(warnMsg);
   }
-  showQuiz('quizSet1');
+  showQuiz('quizSet1'); // Show the first quiz by default
 });
 </script>
 </body>
