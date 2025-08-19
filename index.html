@@ -142,27 +142,25 @@ const shortAnswers = {
   q7: "The pupa stage (or larva/caterpillar stage). This is because the pupa is the stage just before the adult butterfly emerges."
 };
 // IMPORTANT: Replace with your actual Mistral API key
-const mistralAPIKey = "xxxxxxxxx"; 
+const mistralAPIKey = "xxxxxxxxx"; // Replace this with your key
 
 async function evaluateWithMistral(userInput, modelAnswer) {
-  const prompt = `You are a primary school science teacher marking a student's answer. The student's answer is:\n"${userInput}"\n\nThe model answer is:\n"${modelAnswer}"\n\nIs the student's answer correct? The student may use simpler words. Reply with "Correct" or "Incorrect", then explain your reasoning in one short sentence.`;
-  try {
-    const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
-      method: "POST",
-      headers: { "Authorization": `Bearer ${mistralAPIKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "mistral-small",
-        messages: [{ role: "user", content: prompt }]
-      })
-    });
-    if (!response.ok) return `Error: ${response.statusText}`;
-    const data = await response.json();
-    return data.choices?.[0]?.message?.content || "Error in response from API.";
-  } catch (error) {
-    return "Could not connect to the evaluation service.";
-  }
+  const prompt = `You are a teacher checking a student's answer. The student's answer is:\n"${userInput}"\n\nThe model answer is:\n"${modelAnswer}"\n\nIs the student's answer correct? Reply with "Correct" or "Incorrect", then explain briefly.`;
+  const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${mistralAPIKey}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: "mistral-small",
+      messages: [{ role: "user", content: prompt }]
+    })
+  });
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || "Error in response";
 }
-
+  
 async function submitQuiz() {
   let score = 0;
   let total = 0;
