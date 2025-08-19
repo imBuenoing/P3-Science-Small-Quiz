@@ -1,215 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Cycles in Plants and Animals (P3) Quiz</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>P3 Life Cycles of Plants and Animals - Quiz</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      line-height: 1.6;
-      background: #f4f9f9;
-      color: #333;
-    }
-    h1 {
-      text-align: center;
-      color: #2a7a5e;
-    }
-    .question {
-      margin-bottom: 20px;
-      padding: 15px;
-      border: 2px solid #cce0dd;
-      border-radius: 8px;
-      background: #ffffff;
-    }
-    .feedback {
-      margin-top: 8px;
-      font-weight: bold;
-    }
-    .correct {
-      color: green;
-    }
-    .incorrect {
-      color: red;
-    }
-    button {
-      display: block;
-      margin: 20px auto;
-      padding: 10px 20px;
-      font-size: 16px;
-      background: #2a7a5e;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #24664d;
-    }
-    textarea {
-      width: 100%;
-      height: 80px;
-      margin-top: 8px;
-    }
+    body { font-family: Arial, sans-serif; background: #f4f8fc; padding: 2rem; }
+    .question { background: #fff; padding: 1rem; margin-bottom: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .feedback { margin-top: 0.5rem; font-weight: bold; }
+    .correct { color: #27ae60; }
+    .incorrect { color: #c0392b; }
+    .loading { color: #2980b9; font-style: italic; }
+    button { padding: 0.7rem 1.5rem; background: #3498db; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer; }
+    button:hover { background: #2980b9; }
+    .result { font-weight: bold; margin-top: 2rem; font-size: 1.2rem; color: #2c3e50; }
+    .question-image { max-width: 200px; display: block; margin: 10px 0; }
+    table { border-collapse: collapse; margin: 1rem 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #f2f2f2; }
   </style>
 </head>
 <body>
-  <h1>🌱 Cycles in Plants and Animals (P3) Quiz</h1>
 
-  <form id="quizForm">
-    <!-- Q1 -->
-    <div class="question">
-      <p><b>Q1.</b> Which of the following is <u>NOT</u> part of the life cycle of a flowering plant?</p>
-      <label><input type="radio" name="q1" value="a"> a) Seed</label><br>
-      <label><input type="radio" name="q1" value="b"> b) Young plant</label><br>
-      <label><input type="radio" name="q1" value="c"> c) Adult plant</label><br>
-      <label><input type="radio" name="q1" value="d"> d) Egg</label>
-      <div id="feedback-q1" class="feedback"></div>
-    </div>
+<h1>P3 Life Cycles of Plants and Animals – Quiz</h1>
+<form id="quizForm">
 
-    <!-- Q2 -->
-    <div class="question">
-      <p><b>Q2.</b> A butterfly’s life cycle goes through these stages in order:</p>
-      <label><input type="radio" name="q2" value="a"> a) Egg → Larva → Pupa → Adult</label><br>
-      <label><input type="radio" name="q2" value="b"> b) Egg → Pupa → Larva → Adult</label><br>
-      <label><input type="radio" name="q2" value="c"> c) Adult → Egg → Larva → Pupa</label><br>
-      <label><input type="radio" name="q2" value="d"> d) Larva → Egg → Pupa → Adult</label>
-      <div id="feedback-q2" class="feedback"></div>
-    </div>
+  <!-- MCQ Questions -->
+  <div class="question" id="q1">
+    <h2>1. The diagram shows a 3-stage life cycle (egg → nymph → adult). Which animal has this life cycle?</h2>
+    <input type="radio" name="q1" value="A"> A. Butterfly<br/>
+    <input type="radio" name="q1" value="B"> B. Mosquito<br/>
+    <input type="radio" name="q1" value="C"> C. Grasshopper<br/>
+    <input type="radio" name="q1" value="D"> D. Frog<br/>
+    <div class="feedback" id="f1"></div>
+  </div>
 
-    <!-- Q3 -->
-    <div class="question">
-      <p><b>Q3.</b> Which animal lays eggs that hatch into tadpoles before becoming adults?</p>
-      <label><input type="radio" name="q3" value="a"> a) Chicken</label><br>
-      <label><input type="radio" name="q3" value="b"> b) Frog</label><br>
-      <label><input type="radio" name="q3" value="c"> c) Grasshopper</label><br>
-      <label><input type="radio" name="q3" value="d"> d) Mosquito</label>
-      <div id="feedback-q3" class="feedback"></div>
-    </div>
+  <div class="question" id="q2">
+    <h2>2. Which of the following shows the correct life cycle of a butterfly?</h2>
+    <input type="radio" name="q2" value="A"> A. Egg → Pupa → Larva → Adult<br/>
+    <input type="radio" name="q2" value="B"> B. Egg → Larva → Pupa → Adult<br/>
+    <input type="radio" name="q2" value="C"> C. Egg → Nymph → Adult<br/>
+    <input type="radio" name="q2" value="D"> D. Adult → Pupa → Larva → Egg<br/>
+    <div class="feedback" id="f2"></div>
+  </div>
 
-    <!-- Q4 -->
-    <div class="question">
-      <p><b>Q4.</b> Which of the following shows care and responsibility towards plants and animals?</p>
-      <label><input type="radio" name="q4" value="a"> a) Plucking flowers to play with</label><br>
-      <label><input type="radio" name="q4" value="b"> b) Watering plants regularly</label><br>
-      <label><input type="radio" name="q4" value="c"> c) Keeping insects in a closed jar without air</label><br>
-      <label><input type="radio" name="q4" value="d"> d) Pulling out seedlings for fun</label>
-      <div id="feedback-q4" class="feedback"></div>
-    </div>
+  <div class="question" id="q3">
+    <h2>3. At which stage does a flowering plant start to produce flowers and fruits?</h2>
+    <input type="radio" name="q3" value="A"> A. Seed<br/>
+    <input type="radio" name="q3" value="B"> B. Young Plant (Seedling)<br/>
+    <input type="radio" name="q3" value="C"> C. Adult Plant<br/>
+    <input type="radio" name="q3" value="D"> D. Germination<br/>
+    <div class="feedback" id="f3"></div>
+  </div>
 
-    <!-- Q5 -->
-    <div class="question">
-      <p><b>Q5.</b> The three main stages of a flowering plant’s life cycle are:</p>
-      <input type="text" name="q5" placeholder="Fill in the blanks">
-      <div id="feedback-q5" class="feedback"></div>
-    </div>
+  <!-- Fill in the blanks -->
+  <div class="question" id="q4">
+    <h2>4. The life cycle of a frog has three stages: egg, __________, and adult.</h2>
+    <input type="text" name="q4" placeholder="Enter the young stage"/>
+    <div class="feedback" id="f4"></div>
+  </div>
 
-    <!-- Q6 -->
-    <div class="question">
-      <p><b>Q6.</b> The young stage of a frog is called a ____.</p>
-      <input type="text" name="q6" placeholder="Fill in the blank">
-      <div id="feedback-q6" class="feedback"></div>
-    </div>
+  <div class="question" id="q5">
+    <h2>5. The __________ stage of a butterfly is when it eats a lot of leaves and grows quickly.</h2>
+    <input type="text" name="q5" placeholder="Enter the stage name"/>
+    <div class="feedback" id="f5"></div>
+  </div>
 
-    <!-- Q7 -->
-    <div class="question">
-      <p><b>Q7.</b> A mosquito lays its eggs in ____.</p>
-      <input type="text" name="q7" placeholder="Fill in the blank">
-      <div id="feedback-q7" class="feedback"></div>
-    </div>
+  <div class="question" id="q6">
+    <h2>6. In the pupa stage, the insect does not __________ or move around.</h2>
+    <input type="text" name="q6" placeholder="Enter the missing word"/>
+    <div class="feedback" id="f6"></div>
+  </div>
 
-    <!-- Q8 -->
-    <div class="question">
-      <p><b>Q8.</b> Match the animal with its correct life cycle type:</p>
-      <p>
-        Chicken → <input type="text" name="q8a" placeholder="Type: direct / complete / incomplete"><br>
-        Butterfly → <input type="text" name="q8b"><br>
-        Grasshopper → <input type="text" name="q8c"><br>
-        Frog → <input type="text" name="q8d">
-      </p>
-      <div id="feedback-q8" class="feedback"></div>
-    </div>
+  <!-- Short Answer -->
+  <div class="question" id="q7">
+    <h2>7. The table below shows the growth of Plant Y. Based on the table, how has the height of the plant changed over time?</h2>
+    <table>
+      <tr><th>Day</th><th>Height of plant Y (cm)</th></tr>
+      <tr><td>5</td><td>2</td></tr>
+      <tr><td>10</td><td>4</td></tr>
+      <tr><td>15</td><td>8</td></tr>
+      <tr><td>20</td><td>10</td></tr>
+    </table>
+    <textarea name="q7" rows="3" cols="50"></textarea>
+    <div class="feedback" id="f7"></div>
+  </div>
 
-    <!-- Q9 -->
-    <div class="question">
-      <p><b>Q9.</b> Why is it important to show curiosity when learning about plants and animals?</p>
-      <textarea name="q9"></textarea>
-      <div id="feedback-q9" class="feedback"></div>
-    </div>
+  <div class="question" id="q8">
+    <h2>8. State one main difference between the larva and the pupa stage of a beetle.</h2>
+    <textarea name="q8" rows="3" cols="50"></textarea>
+    <div class="feedback" id="f8"></div>
+  </div>
+  
+  <div class="question" id="q9">
+    <h2>9. The number of caterpillars in a garden decreased from Week 2 to Week 4. If the caterpillars are all still alive, what could have happened to them?</h2>
+    <textarea name="q9" rows="3" cols="50"></textarea>
+    <div class="feedback" id="f9"></div>
+  </div>
 
-    <!-- Q10 -->
-    <div class="question">
-      <p><b>Q10.</b> How can we show care and concern for living things in our daily lives?</p>
-      <textarea name="q10"></textarea>
-      <div id="feedback-q10" class="feedback"></div>
-    </div>
+  <!-- Matching -->
+  <div class="question" id="q10">
+    <h2>10. Match the animal with its young stage.</h2>
+    Frog: 
+    <select name="q10_frog">
+      <option value="">--Select--</option>
+      <option value="A">Nymph</option>
+      <option value="B">Tadpole</option>
+      <option value="C">Caterpillar</option>
+      <option value="D">Baby</option>
+    </select><br/><br/>
+    Butterfly: 
+    <select name="q10_butterfly">
+      <option value="">--Select--</option>
+      <option value="A">Nymph</option>
+      <option value="B">Tadpole</option>
+      <option value="C">Caterpillar</option>
+      <option value="D">Baby</option>
+    </select><br/><br/>
+    Grasshopper: 
+    <select name="q10_grasshopper">
+      <option value="">--Select--</option>
+      <option value="A">Nymph</option>
+      <option value="B">Tadpole</option>
+      <option value="C">Caterpillar</option>
+      <option value="D">Baby</option>
+    </select><br/><br/>
+    Human: 
+    <select name="q10_human">
+      <option value="">--Select--</option>
+      <option value="A">Nymph</option>
+      <option value="B">Tadpole</option>
+      <option value="C">Caterpillar</option>
+      <option value="D">Baby</option>
+    </select>
+    <div class="feedback" id="f10"></div>
+  </div>
 
-    <button type="button" onclick="checkAnswers()">Submit</button>
-  </form>
+  <button type="button" onclick="submitQuiz()">Submit Answers</button>
+  <div class="result" id="results"></div>
+</form>
 
-  <script>
-    const answers = {
-      q1: "d",
-      q2: "a",
-      q3: "b",
-      q4: "b",
-      q5: "Seed → Young plant → Adult plant",
-      q6: "tadpole",
-      q7: "water",
-      q8: {
-        a: "direct",
-        b: "complete",
-        c: "incomplete",
-        d: "complete"
-      }
-    };
+<script>
+const mcqAnswers = { q1: "C", q2: "B", q3: "C" };
+const fibAnswers = {
+  q4: ["tadpole", "young"], 
+  q5: ["larva", "caterpillar"], 
+  q6: ["eat", "feed"]
+};
+const matchAnswers = {
+  q10_frog: "B", q10_butterfly: "C", q10_grasshopper: "A", q10_human: "D"
+};
+const shortAnswers = {
+  q7: "The height of the plant increases as the number of days increases. It grows taller over time.",
+  q8: "The larva is active and eats a lot, while the pupa is mostly inactive and does not eat.",
+  q9: "They have changed into the next stage of their life cycle, which is the pupa (or chrysalis)."
+};
+// IMPORTANT: Replace with your actual Mistral API key
+const mistralAPIKey = "xxxxxxxxx"; 
 
-    function checkAnswers() {
-      const form = document.forms["quizForm"];
-
-      // Q1-Q4 MCQs
-      for (let i = 1; i <= 4; i++) {
-        const userAnswer = form[`q${i}`].value;
-        const feedback = document.getElementById(`feedback-q${i}`);
-        if (userAnswer === answers[`q${i}`]) {
-          feedback.textContent = "✅ Correct!";
-          feedback.className = "feedback correct";
-        } else {
-          feedback.textContent = `❌ Incorrect. Correct answer: ${answers[`q${i}`]}`;
-          feedback.className = "feedback incorrect";
-        }
-      }
-
-      // Q5-Q7 short text
-      for (let i = 5; i <= 7; i++) {
-        const userAnswer = form[`q${i}`].value.trim().toLowerCase();
-        const correct = answers[`q${i}`].toLowerCase();
-        const feedback = document.getElementById(`feedback-q${i}`);
-        if (userAnswer.includes(correct.split(" ")[0])) {
-          feedback.textContent = "✅ Correct!";
-          feedback.className = "feedback correct";
-        } else {
-          feedback.textContent = `❌ Incorrect. Correct answer: ${answers[`q${i}`]}`;
-          feedback.className = "feedback incorrect";
-        }
-      }
-
-      // Q8 matching
-      let correctCount = 0;
-      ["a","b","c","d"].forEach(letter => {
-        const val = form[`q8${letter}`].value.trim().toLowerCase();
-        if (val.includes(answers.q8[letter])) correctCount++;
-      });
-      const feedback8 = document.getElementById("feedback-q8");
-      feedback8.textContent = `You got ${correctCount}/4 correct matches.`;
-      feedback8.className = correctCount === 4 ? "feedback correct" : "feedback incorrect";
-
-      // Q9 & Q10 open-ended → placeholder (API check can be added here)
-      document.getElementById("feedback-q9").textContent =
-        "✅ Answer recorded. (Will be evaluated with Mistral API)";
-      document.getElementById("feedback-q10").textContent =
-        "✅ Answer recorded. (Will be evaluated with Mistral API)";
+async function evaluateWithMistral(userInput, modelAnswer) {
+  if (!userInput) return "No answer provided.";
+  if (mistralAPIKey === "xxxxxxxxx") {
+    return "API Key not set. Cannot evaluate short answer.";
+  }
+  const prompt = `You are a primary school science teacher marking a student's answer. The student's answer is:\n"${userInput}"\n\nThe model answer is:\n"${modelAnswer}"\n\nIs the student's answer correct? The student may use simpler words. Reply with "Correct" or "Incorrect", then explain your reasoning in one short sentence.`;
+  try {
+    const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${mistralAPIKey}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "mistral-small-latest",
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    if (!response.ok) {
+        return `Error: ${response.statusText}`;
     }
-  </script>
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content || "Error in response from API.";
+  } catch (error) {
+    return "Could not connect to the evaluation service.";
+  }
+}
+
+async function submitQuiz() {
+  let score = 0;
+  let total = 0;
+  
+  document.querySelectorAll('.feedback').forEach(el => el.innerHTML = ''); // Clear previous feedback
+
+  // Mark MCQs
+  for (let i = 1; i <= 3; i++) {
+    const q = `q${i}`;
+    const selected = document.querySelector(`input[name="${q}"]:checked`);
+    const correct = mcqAnswers[q];
+    const feedback = document.getElementById(`f${i}`);
+    total++;
+    if (selected?.value === correct) {
+      feedback.textContent = "Correct!";
+      feedback.className = "feedback correct";
+      score++;
+    } else {
+      feedback.textContent = `Incorrect. The correct answer is ${correct}.`;
+      feedback.className = "feedback incorrect";
+    }
+  }
+
+  // Mark Fill-in-the-blanks
+  for (let i = 4; i <= 6; i++) {
+    const q = `q${i}`;
+    const input = document.querySelector(`input[name="${q}"]`).value.trim().toLowerCase();
+    const correctAnswers = fibAnswers[q];
+    const feedback = document.getElementById(`f${i}`);
+    total++;
+    if (correctAnswers.includes(input)) {
+      feedback.textContent = "Correct!";
+      feedback.className = "feedback correct";
+      score++;
+    } else {
+      feedback.textContent = `Incorrect. A correct answer is: ${correctAnswers[0]}.`;
+      feedback.className = "feedback incorrect";
+    }
+  }
+
+  // Mark Matching
+  const matchContainer = document.getElementById('f10');
+  const matchQs = ["q10_frog", "q10_butterfly", "q10_grasshopper", "q10_human"];
+  let matchScore = 0;
+  for (let q of matchQs) {
+    const select = document.querySelector(`select[name="${q}"]`);
+    const correct = matchAnswers[q];
+    total++;
+    if (select.value === correct) {
+        matchScore++;
+        score++;
+    }
+  }
+  matchContainer.textContent = `You got ${matchScore} out of 4 correct.`;
+  matchContainer.className = matchScore === 4 ? "feedback correct" : "feedback incorrect";
+
+
+  // Evaluate Short Answers
+  document.getElementById("results").innerText = "Evaluating your answers... please wait.";
+  for (let i = 7; i <= 9; i++) {
+    const q = `q${i}`;
+    const input = document.querySelector(`textarea[name="${q}"]`).value.trim();
+    const modelAns = shortAnswers[q];
+    const feedback = document.getElementById(`f${i}`);
+    feedback.className = "feedback loading";
+    feedback.textContent = "Checking...";
+    evaluateWithMistral(input, modelAns).then((result) => {
+      feedback.textContent = result;
+      feedback.className = result.toLowerCase().startsWith("correct") ? "feedback correct" : "feedback incorrect";
+    });
+  }
+
+  document.getElementById("results").innerText = `Auto-graded score (MCQ, FIB, Match): ${score} / ${total}. Short answers are evaluated separately above.`;
+}
+</script>
+
 </body>
 </html>
