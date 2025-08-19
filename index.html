@@ -145,10 +145,6 @@ const shortAnswers = {
 const mistralAPIKey = "xxxxxxxxx"; 
 
 async function evaluateWithMistral(userInput, modelAnswer) {
-  if (!userInput) return "No answer provided.";
-  if (mistralAPIKey === "xxxxxxxxx" || mistralAPIKey === "") {
-    return "API Key not set. Cannot evaluate short answer.";
-  }
   const prompt = `You are a primary school science teacher marking a student's answer. The student's answer is:\n"${userInput}"\n\nThe model answer is:\n"${modelAnswer}"\n\nIs the student's answer correct? The student may use simpler words. Reply with "Correct" or "Incorrect", then explain your reasoning in one short sentence.`;
   try {
     const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
