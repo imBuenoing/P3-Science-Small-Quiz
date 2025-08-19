@@ -14,7 +14,9 @@
     button { padding: 0.7rem 1.5rem; background: #3498db; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer; }
     button:hover { background: #2980b9; }
     .result { font-weight: bold; margin-top: 2rem; font-size: 1.2rem; color: #2c3e50; }
-    .question-image { max-width: 200px; display: block; margin: 10px 0; }
+    .chart-container { display: flex; align-items: flex-end; height: 150px; border-left: 2px solid #333; border-bottom: 2px solid #333; padding-left: 10px; margin-top: 15px; }
+    .bar { background-color: #5dade2; margin: 0 15px; text-align: center; color: #333; position: relative; width: 50px; }
+    .bar-label { position: absolute; bottom: -25px; width: 100%; left: 0; }
     table { border-collapse: collapse; margin: 1rem 0; }
     th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
     th { background-color: #f2f2f2; }
@@ -27,113 +29,98 @@
 
   <!-- MCQ Questions -->
   <div class="question" id="q1">
-    <h2>1. The diagram shows a 3-stage life cycle (egg → nymph → adult). Which animal has this life cycle?</h2>
-    <input type="radio" name="q1" value="A"> A. Butterfly<br/>
-    <input type="radio" name="q1" value="B"> B. Mosquito<br/>
-    <input type="radio" name="q1" value="C"> C. Grasshopper<br/>
-    <input type="radio" name="q1" value="D"> D. Frog<br/>
+    <h2>1. Which of the following animals has a 3-stage life cycle where the young looks similar to the adult?</h2>
+    <input type="radio" name="q1" value="A"> A. Cockroach<br/>
+    <input type="radio" name="q1" value="B"> B. Butterfly<br/>
+    <input type="radio" name="q1" value="C"> C. Frog<br/>
+    <input type="radio" name="q1" value="D"> D. Mosquito<br/>
     <div class="feedback" id="f1"></div>
   </div>
 
   <div class="question" id="q2">
-    <h2>2. Which of the following shows the correct life cycle of a butterfly?</h2>
-    <input type="radio" name="q2" value="A"> A. Egg → Pupa → Larva → Adult<br/>
-    <input type="radio" name="q2" value="B"> B. Egg → Larva → Pupa → Adult<br/>
-    <input type="radio" name="q2" value="C"> C. Egg → Nymph → Adult<br/>
-    <input type="radio" name="q2" value="D"> D. Adult → Pupa → Larva → Egg<br/>
+    <h2>2. In the life cycle of a butterfly, which stage is mainly for eating and growing rapidly?</h2>
+    <input type="radio" name="q2" value="A"> A. Egg<br/>
+    <input type="radio" name="q2" value="B"> B. Larva<br/>
+    <input type="radio" name="q2" value="C"> C. Pupa<br/>
+    <input type="radio" name="q2" value="D"> D. Adult<br/>
     <div class="feedback" id="f2"></div>
   </div>
 
+  <!-- Fill in the blanks -->
   <div class="question" id="q3">
-    <h2>3. At which stage does a flowering plant start to produce flowers and fruits?</h2>
-    <input type="radio" name="q3" value="A"> A. Seed<br/>
-    <input type="radio" name="q3" value="B"> B. Young Plant (Seedling)<br/>
-    <input type="radio" name="q3" value="C"> C. Adult Plant<br/>
-    <input type="radio" name="q3" value="D"> D. Germination<br/>
+    <h2>3. The nymph of a grasshopper sheds its skin several times as it grows. This process is called __________.</h2>
+    <input type="text" name="q3" placeholder="Enter the process name"/>
     <div class="feedback" id="f3"></div>
   </div>
 
-  <!-- Fill in the blanks -->
   <div class="question" id="q4">
-    <h2>4. The life cycle of a frog has three stages: egg, __________, and adult.</h2>
-    <input type="text" name="q4" placeholder="Enter the young stage"/>
+    <h2>4. A seed needs water, warmth, and __________ to germinate into a seedling.</h2>
+    <input type="text" name="q4" placeholder="Enter the missing item"/>
     <div class="feedback" id="f4"></div>
   </div>
 
+  <!-- Short Answer with Data Interpretation -->
   <div class="question" id="q5">
-    <h2>5. The __________ stage of a butterfly is when it eats a lot of leaves and grows quickly.</h2>
-    <input type="text" name="q5" placeholder="Enter the stage name"/>
+    <h2>5. The graph below shows the number of leaves on a bean plant over three weeks.</h2>
+    <div class="chart-container">
+        <div class="bar" style="height: 40px;">4<div class="bar-label">Week 1</div></div>
+        <div class="bar" style="height: 80px;">8<div class="bar-label">Week 2</div></div>
+        <div class="bar" style="height: 120px;">12<div class="bar-label">Week 3</div></div>
+    </div>
+    <br><br>
+    <p>Based on the graph, describe the change in the number of leaves from Week 1 to Week 3.</p>
+    <textarea name="q5" rows="3" cols="50"></textarea>
     <div class="feedback" id="f5"></div>
   </div>
 
   <div class="question" id="q6">
-    <h2>6. In the pupa stage, the insect does not __________ or move around.</h2>
-    <input type="text" name="q6" placeholder="Enter the missing word"/>
+    <h2>6. State one main difference between the nymph of a cockroach and the larva of a butterfly.</h2>
+    <textarea name="q6" rows="3" cols="50"></textarea>
     <div class="feedback" id="f6"></div>
   </div>
-
-  <!-- Short Answer -->
+  
   <div class="question" id="q7">
-    <h2>7. The table below shows the growth of Plant Y. Based on the table, how has the height of the plant changed over time?</h2>
-    <table>
-      <tr><th>Day</th><th>Height of plant Y (cm)</th></tr>
-      <tr><td>5</td><td>2</td></tr>
-      <tr><td>10</td><td>4</td></tr>
-      <tr><td>15</td><td>8</td></tr>
-      <tr><td>20</td><td>10</td></tr>
-    </table>
-    <textarea name="q7" rows="3" cols="50"></textarea>
+    <h2>7. In May, a gardener noticed a large increase in the number of adult butterflies in the garden. Which stage of the life cycle must have been present in large numbers in April? Explain your answer.</h2>
+    <textarea name="q7" rows="4" cols="50"></textarea>
     <div class="feedback" id="f7"></div>
   </div>
 
-  <div class="question" id="q8">
-    <h2>8. State one main difference between the larva and the pupa stage of a beetle.</h2>
-    <textarea name="q8" rows="3" cols="50"></textarea>
-    <div class="feedback" id="f8"></div>
-  </div>
-  
-  <div class="question" id="q9">
-    <h2>9. The number of caterpillars in a garden decreased from Week 2 to Week 4. If the caterpillars are all still alive, what could have happened to them?</h2>
-    <textarea name="q9" rows="3" cols="50"></textarea>
-    <div class="feedback" id="f9"></div>
-  </div>
-
   <!-- Matching -->
-  <div class="question" id="q10">
-    <h2>10. Match the animal with its young stage.</h2>
-    Frog: 
-    <select name="q10_frog">
+  <div class="question" id="q8">
+    <h2>8. Match the life cycle stage with its main description.</h2>
+    Larva: 
+    <select name="q8_larva">
       <option value="">--Select--</option>
-      <option value="A">Nymph</option>
-      <option value="B">Tadpole</option>
-      <option value="C">Caterpillar</option>
-      <option value="D">Baby</option>
+      <option value="A">Lays eggs to reproduce.</option>
+      <option value="B">The main eating and growing stage; looks very different from the adult.</option>
+      <option value="C">An inactive stage where change happens.</option>
+      <option value="D">Looks like a small, wingless version of the adult.</option>
     </select><br/><br/>
-    Butterfly: 
-    <select name="q10_butterfly">
+    Pupa: 
+    <select name="q8_pupa">
       <option value="">--Select--</option>
-      <option value="A">Nymph</option>
-      <option value="B">Tadpole</option>
-      <option value="C">Caterpillar</option>
-      <option value="D">Baby</option>
+      <option value="A">Lays eggs to reproduce.</option>
+      <option value="B">The main eating and growing stage; looks very different from the adult.</option>
+      <option value="C">An inactive stage where change happens.</option>
+      <option value="D">Looks like a small, wingless version of the adult.</option>
     </select><br/><br/>
-    Grasshopper: 
-    <select name="q10_grasshopper">
+    Adult: 
+    <select name="q8_adult">
       <option value="">--Select--</option>
-      <option value="A">Nymph</option>
-      <option value="B">Tadpole</option>
-      <option value="C">Caterpillar</option>
-      <option value="D">Baby</option>
+      <option value="A">Lays eggs to reproduce.</option>
+      <option value="B">The main eating and growing stage; looks very different from the adult.</option>
+      <option value="C">An inactive stage where change happens.</option>
+      <option value="D">Looks like a small, wingless version of the adult.</option>
     </select><br/><br/>
-    Human: 
-    <select name="q10_human">
+    Nymph: 
+    <select name="q8_nymph">
       <option value="">--Select--</option>
-      <option value="A">Nymph</option>
-      <option value="B">Tadpole</option>
-      <option value="C">Caterpillar</option>
-      <option value="D">Baby</option>
+      <option value="A">Lays eggs to reproduce.</option>
+      <option value="B">The main eating and growing stage; looks very different from the adult.</option>
+      <option value="C">An inactive stage where change happens.</option>
+      <option value="D">Looks like a small, wingless version of the adult.</option>
     </select>
-    <div class="feedback" id="f10"></div>
+    <div class="feedback" id="f8"></div>
   </div>
 
   <button type="button" onclick="submitQuiz()">Submit Answers</button>
@@ -141,44 +128,38 @@
 </form>
 
 <script>
-const mcqAnswers = { q1: "C", q2: "B", q3: "C" };
+const mcqAnswers = { q1: "A", q2: "B" };
 const fibAnswers = {
-  q4: ["tadpole", "young"], 
-  q5: ["larva", "caterpillar"], 
-  q6: ["eat", "feed"]
+  q3: ["moulting", "molting"], 
+  q4: ["air", "oxygen"]
 };
 const matchAnswers = {
-  q10_frog: "B", q10_butterfly: "C", q10_grasshopper: "A", q10_human: "D"
+  q8_larva: "B", q8_pupa: "C", q8_adult: "A", q8_nymph: "D"
 };
 const shortAnswers = {
-  q7: "The height of the plant increases as the number of days increases. It grows taller over time.",
-  q8: "The larva is active and eats a lot, while the pupa is mostly inactive and does not eat.",
-  q9: "They have changed into the next stage of their life cycle, which is the pupa (or chrysalis)."
+  q5: "The number of leaves on the plant increased over the three weeks. / The plant grew more leaves over time.",
+  q6: "The nymph of a cockroach looks like a smaller version of the adult, but the larva of a butterfly (caterpillar) does not look like the adult butterfly at all.",
+  q7: "The pupa stage (or larva/caterpillar stage). This is because the pupa is the stage just before the adult butterfly emerges."
 };
 // IMPORTANT: Replace with your actual Mistral API key
 const mistralAPIKey = "xxxxxxxxx"; 
 
 async function evaluateWithMistral(userInput, modelAnswer) {
   if (!userInput) return "No answer provided.";
-  if (mistralAPIKey === "xxxxxxxxx") {
+  if (mistralAPIKey === "xxxxxxxxx" || mistralAPIKey === "") {
     return "API Key not set. Cannot evaluate short answer.";
   }
   const prompt = `You are a primary school science teacher marking a student's answer. The student's answer is:\n"${userInput}"\n\nThe model answer is:\n"${modelAnswer}"\n\nIs the student's answer correct? The student may use simpler words. Reply with "Correct" or "Incorrect", then explain your reasoning in one short sentence.`;
   try {
     const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
       method: "POST",
-      headers: {
-        "Authorization": `Bearer ${mistralAPIKey}`,
-        "Content-Type": "application/json"
-      },
+      headers: { "Authorization": `Bearer ${mistralAPIKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "mistral-small-latest",
         messages: [{ role: "user", content: prompt }]
       })
     });
-    if (!response.ok) {
-        return `Error: ${response.statusText}`;
-    }
+    if (!response.ok) return `Error: ${response.statusText}`;
     const data = await response.json();
     return data.choices?.[0]?.message?.content || "Error in response from API.";
   } catch (error) {
@@ -190,10 +171,10 @@ async function submitQuiz() {
   let score = 0;
   let total = 0;
   
-  document.querySelectorAll('.feedback').forEach(el => el.innerHTML = ''); // Clear previous feedback
+  document.querySelectorAll('.feedback').forEach(el => el.innerHTML = '');
 
   // Mark MCQs
-  for (let i = 1; i <= 3; i++) {
+  for (let i = 1; i <= 2; i++) {
     const q = `q${i}`;
     const selected = document.querySelector(`input[name="${q}"]:checked`);
     const correct = mcqAnswers[q];
@@ -210,7 +191,7 @@ async function submitQuiz() {
   }
 
   // Mark Fill-in-the-blanks
-  for (let i = 4; i <= 6; i++) {
+  for (let i = 3; i <= 4; i++) {
     const q = `q${i}`;
     const input = document.querySelector(`input[name="${q}"]`).value.trim().toLowerCase();
     const correctAnswers = fibAnswers[q];
@@ -227,13 +208,13 @@ async function submitQuiz() {
   }
 
   // Mark Matching
-  const matchContainer = document.getElementById('f10');
-  const matchQs = ["q10_frog", "q10_butterfly", "q10_grasshopper", "q10_human"];
+  const matchContainer = document.getElementById('f8');
+  const matchQs = ["q8_larva", "q8_pupa", "q8_adult", "q8_nymph"];
   let matchScore = 0;
+  total += matchQs.length;
   for (let q of matchQs) {
     const select = document.querySelector(`select[name="${q}"]`);
     const correct = matchAnswers[q];
-    total++;
     if (select.value === correct) {
         matchScore++;
         score++;
@@ -242,22 +223,24 @@ async function submitQuiz() {
   matchContainer.textContent = `You got ${matchScore} out of 4 correct.`;
   matchContainer.className = matchScore === 4 ? "feedback correct" : "feedback incorrect";
 
-
   // Evaluate Short Answers
   document.getElementById("results").innerText = "Evaluating your answers... please wait.";
-  for (let i = 7; i <= 9; i++) {
+  const shortAnswerPromises = [];
+  for (let i = 5; i <= 7; i++) {
     const q = `q${i}`;
     const input = document.querySelector(`textarea[name="${q}"]`).value.trim();
     const modelAns = shortAnswers[q];
     const feedback = document.getElementById(`f${i}`);
     feedback.className = "feedback loading";
     feedback.textContent = "Checking...";
-    evaluateWithMistral(input, modelAns).then((result) => {
+    const promise = evaluateWithMistral(input, modelAns).then((result) => {
       feedback.textContent = result;
       feedback.className = result.toLowerCase().startsWith("correct") ? "feedback correct" : "feedback incorrect";
     });
+    shortAnswerPromises.push(promise);
   }
 
+  await Promise.all(shortAnswerPromises);
   document.getElementById("results").innerText = `Auto-graded score (MCQ, FIB, Match): ${score} / ${total}. Short answers are evaluated separately above.`;
 }
 </script>
