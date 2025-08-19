@@ -151,7 +151,7 @@ async function evaluateWithMistral(userInput, modelAnswer) {
       method: "POST",
       headers: { "Authorization": `Bearer ${mistralAPIKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "mistral-small-latest",
+        model: "mistral-small",
         messages: [{ role: "user", content: prompt }]
       })
     });
