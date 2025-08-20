@@ -1,5 +1,146 @@
-<script src="config.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>P3 Life Cycles Interactive Quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f8fc; padding: 2rem; color: #333; margin-top: 70px; /* Space for fixed nav */ }
+    h1 { color: #2c3e50; text-align: center; margin-bottom: 1rem; font-size: 1.8em; }
+    h2 { color: #34495e; margin-top: 0; font-size: 1.2em; }
+    .quiz-section { display: none; padding-top: 1rem; }
+    .quiz-section.active { display: block; }
+    .question { background: #fff; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .question input[type="text"], .question select { width: calc(100% - 12px); padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-size: 0.9em;}
+    .question input[type="radio"] { margin-right: 5px; vertical-align: middle;}
+    .question label { vertical-align: middle; }
+    .feedback { margin-top: 0.5rem; padding: 0.5rem; border-radius: 4px; font-weight: bold; font-size: 0.9em;}
+    .feedback.correct { color: #27ae60; background-color: #e9f7ef; border-left: 4px solid #27ae60; }
+    .feedback.incorrect { color: #c0392b; background-color: #fdedec; border-left: 4px solid #c0392b;}
+    .feedback.info { color: #2980b9; background-color: #eaf2f8; border-left: 4px solid #2980b9; }
+    .loading { color: #2980b9; font-style: italic; }
+    button.quiz-submit-btn { display: block; width: 180px; margin: 1.5rem auto 1rem; padding: 0.7rem 1.2rem; background: #3498db; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer; transition: background-color 0.3s ease; }
+    button.quiz-submit-btn:hover { background: #2980b9; }
+    .result { font-weight: bold; margin-top: 1.5rem; font-size: 1.1rem; text-align: center; padding: 0.8rem; background-color: #e8f6fd; border: 1px solid #3498db; border-radius: 5px; color: #2c3e50; }
+    .navigation-buttons { position: fixed; top: 10px; right: 10px; z-index: 1000; background-color: rgba(255, 255, 255, 0.95); padding: 8px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .navigation-buttons button { margin-left: 5px; padding: 8px 12px; cursor: pointer; border: 1px solid #ccc; background-color: #f0f0f0; border-radius: 3px; font-size: 0.9em; }
+    .navigation-buttons button.active-nav { background-color: #3498db; color: white; border-color: #2980b9; }
+  </style>
+</head>
+<body>
 
+  <div class="navigation-buttons">
+    <button onclick="showQuiz('quizSet1')" id="navBtnSet1">Main Quiz</button>
+    <button onclick="showQuiz('quizSet2')" id="navBtnSet2">Revision Set 2</button>
+    <button onclick="showQuiz('quizSet3')" id="navBtnSet3">Revision Set 3</button>
+  </div>
+
+  <!-- QUIZ SET 1: Main Life Cycles Quiz -->
+  <div id="quizSet1" class="quiz-section">
+    <h1>P3 Life Cycles – Main Quiz</h1>
+    <form id="quizFormSet1">
+      <!-- MCQ Questions -->
+      <div class="question"><h2>1. Which of these animals has a 3-stage life cycle?</h2><input type="radio" name="q1_1" value="A" id="q1_1A"><label for="q1_1A"> A. Butterfly</label><br/><input type="radio" name="q1_1" value="B" id="q1_1B"><label for="q1_1B"> B. Beetle</label><br/><input type="radio" name="q1_1" value="C" id="q1_1C"><label for="q1_1C"> C. Grasshopper</label><br/><input type="radio" name="q1_1" value="D" id="q1_1D"><label for="q1_1D"> D. Mosquito</label><div class="feedback" id="f1_1"></div></div>
+      <div class="question"><h2>2. What is the correct order for the life cycle of a butterfly?</h2><input type="radio" name="q1_2" value="A" id="q1_2A"><label for="q1_2A"> A. Egg -> Pupa -> Larva -> Adult</label><br/><input type="radio" name="q1_2" value="B" id="q1_2B"><label for="q1_2B"> B. Egg -> Larva -> Pupa -> Adult</label><br/><input type="radio" name="q1_2" value="C" id="q1_2C"><label for="q1_2C"> C. Larva -> Egg -> Pupa -> Adult</label><br/><input type="radio" name="q1_2" value="D" id="q1_2D"><label for="q1_2D"> D. Egg -> Nymph -> Adult</label><div class="feedback" id="f1_2"></div></div>
+      <div class="question"><h2>3. The young of a frog is called a...</h2><input type="radio" name="q1_3" value="A" id="q1_3A"><label for="q1_3A"> A. Nymph</label><br/><input type="radio" name="q1_3" value="B" id="q1_3B"><label for="q1_3B"> B. Larva</label><br/><input type="radio" name="q1_3" value="C" id="q1_3C"><label for="q1_3C"> C. Tadpole</label><br/><input type="radio" name="q1_3" value="D" id="q1_3D"><label for="q1_3D"> D. Chick</label><div class="feedback" id="f1_3"></div></div>
+      <div class="question"><h2>4. At which stage does a flowering plant produce flowers and fruits?</h2><input type="radio" name="q1_4" value="A" id="q1_4A"><label for="q1_4A"> A. Seed</label><br/><input type="radio" name="q1_4" value="B" id="q1_4B"><label for="q1_4B"> B. Young plant</label><br/><input type="radio" name="q1_4" value="C" id="q1_4C"><label for="q1_4C"> C. Adult plant</label><br/><input type="radio" name="q1_4" value="D" id="q1_4D"><label for="q1_4D"> D. Germination</label><div class="feedback" id="f1_4"></div></div>
+      <div class="question"><h2>5. The young in a 3-stage life cycle is called a nymph. Which statement about a nymph is true?</h2><input type="radio" name="q1_5" value="A" id="q1_5A"><label for="q1_5A"> A. It does not eat or move.</label><br/><input type="radio" name="q1_5" value="B" id="q1_5B"><label for="q1_5B"> B. It looks like a smaller version of the adult.</label><br/><input type="radio" name="q1_5" value="C" id="q1_5C"><label for="q1_5C"> C. It lives only in water.</label><br/><input type="radio" name="q1_5" value="D" id="q1_5D"><label for="q1_5D"> D. It looks completely different from the adult.</label><div class="feedback" id="f1_5"></div></div>
+      <!-- Fill in the Blanks -->
+      <div class="question"><h2>6. The _______ is the stage in a butterfly's life cycle where it does not eat or move much.</h2><input type="text" name="q1_6"/><div class="feedback" id="f1_6"></div></div>
+      <div class="question"><h2>7. A tadpole lives in water and breathes through _______.</h2><input type="text" name="q1_7"/><div class="feedback" id="f1_7"></div></div>
+      <div class="question"><h2>8. The life cycle of a plant starts from a _______.</h2><input type="text" name="q1_8"/><div class="feedback" id="f1_8"></div></div>
+      <div class="question"><h2>9. A cockroach has a _______-stage life cycle.</h2><input type="text" name="q1_9"/><div class="feedback" id="f1_9"></div></div>
+      <div class="question"><h2>10. The process where a nymph sheds its outer skin as it grows is called _______.</h2><input type="text" name="q1_10"/><div class="feedback" id="f1_10"></div></div>
+      <!-- Short Answer -->
+      <div class="question"><h2>11. Name the four stages in the life cycle of a mosquito.</h2><input type="text" name="q1_11"/><div class="feedback" id="f1_11"></div></div>
+      <div class="question"><h2>12. State one difference between a tadpole and an adult frog.</h2><input type="text" name="q1_12"/><div class="feedback" id="f1_12"></div></div>
+      <div class="question"><h2>13. Why is the pupa stage also called the 'resting stage'?</h2><input type="text" name="q1_13"/><div class="feedback" id="f1_13"></div></div>
+      <div class="question"><h2>14. How is the young of a chicken different from the young of a butterfly?</h2><input type="text" name="q1_14"/><div class="feedback" id="f1_14"></div></div>
+      <div class="question"><h2>15. What three things does a seed need to germinate?</h2><input type="text" name="q1_15"/><div class="feedback" id="f1_15"></div></div>
+      <!-- Matching -->
+      <div class="question"><h2>16. Match the animal to the name of its young.</h2>
+        Frog: <select name="q1_16_frog"><option value="">--Select--</option><option value="A">Nymph</option><option value="B">Larva</option><option value="C">Tadpole</option><option value="D">Chick</option></select><br/><br/>
+        Butterfly: <select name="q1_16_butterfly"><option value="">--Select--</option><option value="A">Nymph</option><option value="B">Larva</option><option value="C">Tadpole</option><option value="D">Chick</option></select><br/><br/>
+        Grasshopper: <select name="q1_16_grasshopper"><option value="">--Select--</option><option value="A">Nymph</option><option value="B">Larva</option><option value="C">Tadpole</option><option value="D">Chick</option></select><br/><br/>
+        Chicken: <select name="q1_16_chicken"><option value="">--Select--</option><option value="A">Nymph</option><option value="B">Larva</option><option value="C">Tadpole</option><option value="D">Chick</option></select>
+        <div class="feedback" id="f1_16"></div>
+      </div>
+      <button type="button" class="quiz-submit-btn" onclick="submitQuiz('quizSet1')">Submit Main Quiz</button>
+      <div class="result" id="resultsSet1"></div>
+    </form>
+  </div>
+
+  <!-- QUIZ SET 2: Revision Set 2 -->
+  <div id="quizSet2" class="quiz-section">
+    <h1>P3 Life Cycles – Revision Set 2: Definitions & Stages</h1>
+    <form id="quizFormSet2">
+      <!-- MCQ -->
+      <div class="question"><h2>1. The larva of a butterfly is also known as a...</h2><input type="radio" name="q2_1" value="A" id="q2_1A"><label for="q2_1A"> A. Caterpillar</label><br/><input type="radio" name="q2_1" value="B" id="q2_1B"><label for="q2_1B"> B. Nymph</label><br/><input type="radio" name="q2_1" value="C" id="q2_1C"><label for="q2_1C"> C. Tadpole</label><br/><input type="radio" name="q2_1" value="D" id="q2_1D"><label for="q2_1D"> D. Pupa</label><div class="feedback" id="f2_1"></div></div>
+      <div class="question"><h2>2. Which of these is NOT a stage in the life cycle of a frog?</h2><input type="radio" name="q2_2" value="A" id="q2_2A"><label for="q2_2A"> A. Egg</label><br/><input type="radio" name="q2_2" value="B" id="q2_2B"><label for="q2_2B"> B. Pupa</label><br/><input type="radio" name="q2_2" value="C" id="q2_2C"><label for="q2_2C"> C. Tadpole</label><br/><input type="radio" name="q2_2" value="D" id="q2_2D"><label for="q2_2D"> D. Adult</label><div class="feedback" id="f2_2"></div></div>
+      <div class="question"><h2>3. Germination is the process where...</h2><input type="radio" name="q2_3" value="A" id="q2_3A"><label for="q2_3A"> A. a plant makes fruit.</label><br/><input type="radio" name="q2_3" value="B" id="q2_3B"><label for="q2_3B"> B. an animal lays eggs.</label><br/><input type="radio" name="q2_3" value="C" id="q2_3C"><label for="q2_3C"> C. a seed starts to grow into a plant.</label><br/><input type="radio" name="q2_3" value="D" id="q2_3D"><label for="q2_3D"> D. a larva turns into an adult.</label><div class="feedback" id="f2_3"></div></div>
+      <div class="question"><h2>4. An animal with a 4-stage life cycle is the...</h2><input type="radio" name="q2_4" value="A" id="q2_4A"><label for="q2_4A"> A. Frog</label><br/><input type="radio" name="q2_4" value="B" id="q2_4B"><label for="q2_4B"> B. Beetle</label><br/><input type="radio" name="q2_4" value="C" id="q2_4C"><label for="q2_4C"> C. Chicken</label><br/><input type="radio" name="q2_4" value="D" id="q2_4D"><label for="q2_4D"> D. Cockroach</label><div class="feedback" id="f2_4"></div></div>
+      <div class="question"><h2>5. Which stage hatches from the egg of a grasshopper?</h2><input type="radio" name="q2_5" value="A" id="q2_5A"><label for="q2_5A"> A. Larva</label><br/><input type="radio" name="q2_5" value="B" id="q2_5B"><label for="q2_5B"> B. Pupa</label><br/><input type="radio" name="q2_5" value="C" id="q2_5C"><label for="q2_5C"> C. Tadpole</label><br/><input type="radio" name="q2_5" value="D" id="q2_5D"><label for="q2_5D"> D. Nymph</label><div class="feedback" id="f2_5"></div></div>
+      <!-- FIB -->
+      <div class="question"><h2>6. The adult plant produces _______ which contain seeds.</h2><input type="text" name="q2_6"/><div class="feedback" id="f2_6"></div></div>
+      <div class="question"><h2>7. The _______ of a mosquito lives in water.</h2><input type="text" name="q2_7"/><div class="feedback" id="f2_7"></div></div>
+      <div class="question"><h2>8. A life cycle shows how a living thing _______ and changes.</h2><input type="text" name="q2_8"/><div class="feedback" id="f2_8"></div></div>
+      <div class="question"><h2>9. In a 4-stage life cycle, the _______ often eats a lot and grows quickly.</h2><input type="text" name="q2_9"/><div class="feedback" id="f2_9"></div></div>
+      <div class="question"><h2>10. The young plant stage is also called a _______.</h2><input type="text" name="q2_10"/><div class="feedback" id="f2_10"></div></div>
+      <!-- Short Answer -->
+      <div class="question"><h2>11. What is a 'life cycle'?</h2><input type="text" name="q2_11"/><div class="feedback" id="f2_11"></div></div>
+      <div class="question"><h2>12. Describe the 'larva' stage of a butterfly.</h2><input type="text" name="q2_12"/><div class="feedback" id="f2_12"></div></div>
+      <div class="question"><h2>13. What happens during the 'pupa' stage?</h2><input type="text" name="q2_13"/><div class="feedback" id="f2_13"></div></div>
+      <div class="question"><h2>14. What are the three main stages in the life cycle of a plant?</h2><input type="text" name="q2_14"/><div class="feedback" id="f2_14"></div></div>
+      <div class="question"><h2>15. What does it mean when we say a nymph 'moults'?</h2><input type="text" name="q2_15"/><div class="feedback" id="f2_15"></div></div>
+      <!-- Matching -->
+      <div class="question"><h2>16. Match the term to its description.</h2>
+        Nymph: <select name="q2_16_nymph"><option value="">--Select--</option><option value="A">The changing stage</option><option value="B">A seed starting to grow</option><option value="C">Young that looks like the adult</option><option value="D">The eating stage</option></select><br/><br/>
+        Pupa: <select name="q2_16_pupa"><option value="">--Select--</option><option value="A">The changing stage</option><option value="B">A seed starting to grow</option><option value="C">Young that looks like the adult</option><option value="D">The eating stage</option></select><br/><br/>
+        Larva: <select name="q2_16_larva"><option value="">--Select--</option><option value="A">The changing stage</option><option value="B">A seed starting to grow</option><option value="C">Young that looks like the adult</option><option value="D">The eating stage</option></select><br/><br/>
+        Germination: <select name="q2_16_germination"><option value="">--Select--</option><option value="A">The changing stage</option><option value="B">A seed starting to grow</option><option value="C">Young that looks like the adult</option><option value="D">The eating stage</option></select>
+        <div class="feedback" id="f2_16"></div>
+      </div>
+      <button type="button" class="quiz-submit-btn" onclick="submitQuiz('quizSet2')">Submit Revision Set 2</button>
+      <div class="result" id="resultsSet2"></div>
+    </form>
+  </div>
+
+  <!-- QUIZ SET 3: Revision Set 3 -->
+  <div id="quizSet3" class="quiz-section">
+    <h1>P3 Life Cycles – Revision Set 3: Application & Comparison</h1>
+    <form id="quizFormSet3">
+      <!-- MCQ -->
+      <div class="question"><h2>1. A similarity between the life cycle of a frog and a butterfly is that...</h2><input type="radio" name="q3_1" value="A" id="q3_1A"><label for="q3_1A"> A. they both have a pupa stage.</label><br/><input type="radio" name="q3_1" value="B" id="q3_1B"><label for="q3_1B"> B. their young look like the adults.</label><br/><input type="radio" name="q3_1" value="C" id="q3_1C"><label for="q3_1C"> C. they both lay eggs in water.</label><br/><input type="radio" name="q3_1" value="D" id="q3_1D"><label for="q3_1D"> D. their young do not look like the adults.</label><div class="feedback" id="f3_1"></div></div>
+      <div class="question"><h2>2. Which animal's life cycle is most similar to a cockroach?</h2><input type="radio" name="q3_2" value="A" id="q3_2A"><label for="q3_2A"> A. Butterfly</label><br/><input type="radio" name="q3_2" value="B" id="q3_2B"><label for="q3_2B"> B. Frog</label><br/><input type="radio" name="q3_2" value="C" id="q3_2C"><label for="q3_2C"> C. Grasshopper</label><br/><input type="radio" name="q3_2" value="D" id="q3_2D"><label for="q3_2D"> D. Mosquito</label><div class="feedback" id="f3_2"></div></div>
+      <div class="question"><h2>3. James found some caterpillars on a plant. If he comes back in a few weeks, what is he most likely to find?</h2><input type="radio" name="q3_3" value="A" id="q3_3A"><label for="q3_3A"> A. Eggs</label><br/><input type="radio" name="q3_3" value="B" id="q3_3B"><label for="q3_3B"> B. Tadpoles</label><br/><input type="radio" name="q3_3" value="C" id="q3_3C"><label for="q3_3C"> C. Pupas or butterflies</label><br/><input type="radio" name="q3_3" value="D" id="q3_3D"><label for="q3_3D"> D. More caterpillars of the same size</label><div class="feedback" id="f3_3"></div></div>
+      <div class="question"><h2>4. Which pair has the same number of stages in their life cycle?</h2><input type="radio" name="q3_4" value="A" id="q3_4A"><label for="q3_4A"> A. Frog and butterfly</label><br/><input type="radio" name="q3_4" value="B" id="q3_4B"><label for="q3_4B"> B. Butterfly and chicken</label><br/><input type="radio" name="q3_4" value="C" id="q3_4C"><label for="q3_4C"> C. Mosquito and beetle</label><br/><input type="radio" name="q3_4" value="D" id="q3_4D"><label for="q3_4D"> D. Grasshopper and mosquito</label><div class="feedback" id="f3_4"></div></div>
+      <div class="question"><h2>5. A young plant needs sunlight to...</h2><input type="radio" name="q3_5" value="A" id="q3_5A"><label for="q3_5A"> A. germinate.</label><br/><input type="radio" name="q3_5" value="B" id="q3_5B"><label for="q3_5B"> B. keep warm.</label><br/><input type="radio" name="q3_5" value="C" id="q3_5C"><label for="q3_5C"> C. make its own food.</label><br/><input type="radio" name="q3_5" value="D" id="q3_5D"><label for="q3_5D"> D. absorb water.</label><div class="feedback" id="f3_5"></div></div>
+      <!-- FIB -->
+      <div class="question"><h2>6. Both a tadpole and a fish breathe through _______.</h2><input type="text" name="q3_6"/><div class="feedback" id="f3_6"></div></div>
+      <div class="question"><h2>7. A key difference between a 3-stage and 4-stage life cycle is the presence of a _______ stage.</h2><input type="text" name="q3_7"/><div class="feedback" id="f3_7"></div></div>
+      <div class="question"><h2>8. A chicken's life cycle is different from a butterfly's because the _______ looks very similar to the adult.</h2><input type="text" name="q3_8"/><div class="feedback" id="f3_8"></div></div>
+      <div class="question"><h2>9. An adult butterfly lays _______ to start the life cycle again.</h2><input type="text" name="q3_9"/><div class="feedback" id="f3_9"></div></div>
+      <div class="question"><h2>10. A young plant is also called a seedling, while the young of a grasshopper is called a _______.</h2><input type="text" name="q3_10"/><div class="feedback" id="f3_10"></div></div>
+      <!-- Short Answer -->
+      <div class="question"><h2>11. State one similarity between the life cycle of a chicken and a grasshopper.</h2><input type="text" name="q3_11"/><div class="feedback" id="f3_11"></div></div>
+      <div class="question"><h2>12. State one difference between the life cycle of a frog and a grasshopper.</h2><input type="text" name="q3_12"/><div class="feedback" id="f3_12"></div></div>
+      <div class="question"><h2>13. A student says a tadpole is a fish. Why is this incorrect?</h2><input type="text" name="q3_13"/><div class="feedback" id="f3_13"></div></div>
+      <div class="question"><h2>14. Why does a caterpillar need to eat so much?</h2><input type="text" name="q3_14"/><div class="feedback" id="f3_14"></div></div>
+      <div class="question"><h2>15. If you want to grow a bean plant, what is the very first stage you will need?</h2><input type="text" name="q3_15"/><div class="feedback" id="f3_15"></div></div>
+      <!-- Matching -->
+      <div class="question"><h2>16. Match the animal to the number of stages in its life cycle.</h2>
+        Butterfly: <select name="q3_16_butterfly"><option value="">--Select--</option><option value="A">3-stage</option><option value="B">4-stage</option></select><br/><br/>
+        Frog: <select name="q3_16_frog"><option value="">--Select--</option><option value="A">3-stage</option><option value="B">4-stage</option></select><br/><br/>
+        Mosquito: <select name="q3_16_mosquito"><option value="">--Select--</option><option value="A">3-stage</option><option value="B">4-stage</option></select><br/><br/>
+        Cockroach: <select name="q3_16_cockroach"><option value="">--Select--</option><option value="A">3-stage</option><option value="B">4-stage</option></select>
+        <div class="feedback" id="f3_16"></div>
+      </div>
+      <button type="button" class="quiz-submit-btn" onclick="submitQuiz('quizSet3')">Submit Revision Set 3</button>
+      <div class="result" id="resultsSet3"></div>
+    </form>
+  </div>
+
+<script src="config.js"></script>
 <script>
 // --- Global Quiz Data ---
 const allQuizData = {
@@ -243,3 +384,5 @@ document.addEventListener('DOMContentLoaded', () => {
   showQuiz('quizSet1'); // Show the first quiz by default
 });
 </script>
+</body>
+</html>
